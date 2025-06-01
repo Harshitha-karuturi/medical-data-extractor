@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 import os
 import uuid
 
@@ -9,7 +9,7 @@ from backend.extractor import extract
 
 app = FastAPI()
 
-# Enable CORS (allow all origins and methods)
+# Enable CORS for all domains (frontend)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,22 +17,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static files at /static
+# Mount static files (HTML/CSS)
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
-# Serve the index.html at root "/"
-@app.get("/")
+# Serve the main HTML page
+@app.get("/", response_class=HTMLResponse)
+@app.head("/")  # Required for Render health check
 async def root():
     return FileResponse("frontend/index.html")
 
-
+# API endpoint to handle PDF uploads
 @app.post("/extract_from_doc")
-def extract_from_doc(file_format: str = Form(...), file: UploadFile = File(...)):
+async def extract_from_doc(file_format: str = Form(...), file: UploadFile = File(...)):
     # Ensure uploads directory exists
     if not os.path.exists("uploads"):
         os.makedirs("uploads")
 
-    contents = file.file.read()
+    contents = await file.read()
     file_path = "uploads/" + str(uuid.uuid4()) + ".pdf"
 
     with open(file_path, "wb") as f:
@@ -43,7 +44,7 @@ def extract_from_doc(file_format: str = Form(...), file: UploadFile = File(...))
     except Exception as e:
         data = {"error": str(e)}
 
-    # Remove the uploaded file after processing
+    # Clean up the uploaded file
     if os.path.exists(file_path):
         os.remove(file_path)
 
