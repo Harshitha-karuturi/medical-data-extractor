@@ -1,0 +1,97 @@
+body {
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #1560BD; /* Denim */
+  margin-bottom: 25px;
+  font-family: 'Georgia', serif;
+  font-size: 2rem;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+input[type="file"],
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  background-color: #1560BD; /* Denim */
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #104e96; /* Darker denim for hover */
+}
+
+.output-box {
+  margin-top: 30px;
+}
+
+
+#output {
+  background-color: #fdfdfd;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  white-space: normal;
+  color: #444;
+  overflow-x: auto;
+}
+
+/* Table styling inside #output */
+#output table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: inherit;
+}
+
+#output th,
+#output td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+#output th {
+  background-color: #e0e0e0; /* Neutral gray */
+  color: #333;
+  font-weight: 600;
+}
+
+#output tr:nth-child(even) {
+  background-color: #f9f9f9;
+}

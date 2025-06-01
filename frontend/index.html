@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medical Data Extractor</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>📄 Medical Data Extractor</h2>
+
+    <form id="uploadForm">
+      <div class="form-group">
+        <label for="file_format">File Type</label>
+        <select name="file_format" id="file_format" required>
+          <option value="prescription">Prescription</option>
+          <option value="patient_details">Patient Details</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="file">Choose PDF File</label>
+        <input type="file" id="file" name="file" accept=".pdf" required />
+      </div>
+
+      <button type="submit">Extract Data</button>
+    </form>
+
+    <div class="output-box">
+      <h4>Extracted Information:</h4>
+      <div id="output"></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const output = document.getElementById("output");
+
+    function jsonToTable(json) {
+      if (json.error) {
+        return `<p style="color:red;">Error: ${json.error}</p>`;
+      }
+      if (typeof json !== "object" || json === null) {
+        return "<p>No data to display.</p>";
+      }
+
+      if (Array.isArray(json)) {
+        if (json.length === 0) return "<p>No data available.</p>";
+
+        const keys = Object.keys(json[0]);
+        let table = "<table border='1'><thead><tr>";
+        keys.forEach((key) => {
+          table += `<th>${key}</th>`;
+        });
+        table += "</tr></thead><tbody>";
+
+        json.forEach((item) => {
+          table += "<tr>";
+          keys.forEach((key) => {
+            table += `<td>${item[key] ?? ""}</td>`;
+          });
+          table += "</tr>";
+        });
+        table += "</tbody></table>";
+        return table;
+      }
+
+      
+      let table = "<table border='1'><tbody>";
+      for (const key in json) {
+        table += `<tr><th>${key}</th><td>${json[key]}</td></tr>`;
+      }
+      table += "</tbody></table>";
+      return table;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      const response = await fetch("/extract_from_doc", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+      output.innerHTML = jsonToTable(result);
+    });
+  </script>
+</body>
+</html>
