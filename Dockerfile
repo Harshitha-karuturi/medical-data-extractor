@@ -1,7 +1,7 @@
 # Use a lightweight Python image
 FROM python:3.10-slim
 
-# Install system dependencies including tesseract and poppler
+# Install system dependencies including tesseract, poppler, and OpenCV dependencies
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     poppler-utils \
@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     libsm6 \
     libxext6 \
     libxrender-dev \
+    libgl1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory inside the container
