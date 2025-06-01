@@ -5,8 +5,9 @@ import backend.util as util
 from backend.parser_prescription import PrescriptionParser
 from backend.parser_patient_details import PatientDetailsParser
 
-POPPLER_PATH = r'C:\poppler\Library\bin'
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# Use Linux paths for Render/Docker deployment
+POPPLER_PATH = "/usr/bin"
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 def extract(file_path, file_format):
     pages = convert_from_path(file_path, poppler_path=POPPLER_PATH)
