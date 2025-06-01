@@ -26,6 +26,7 @@ def extract(file_path, file_format):
             processed_image = util.preprocess_image(page)
             text = pytesseract.image_to_string(processed_image, lang='eng')
             document_text = text.strip()
+            print("OCR text:\n",document_text)
 
         # Parse based on format
         if file_format == 'prescription':
